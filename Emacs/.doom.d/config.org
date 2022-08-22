@@ -28,6 +28,12 @@ General emacs keybinds:
   - SPC w s : split window horizontally
   - SPC p r : Projectile run (enter: mvn spring-boot:run)
     - Seems odd, but doing this seems faster than hitting play button w/ mouse in IntelliJ
+** Install
+- Copy all the files to ~/.doom.d
+- then:
+  - git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
+  - ~/.emacs.d/bin/doom sync
+  - ENJOY!
 * PACKAGES INIT
 #+begin_src emacs-lisp :tangle yes
 (condition-case nil
@@ -636,7 +642,7 @@ Settings for the various shells and terminal emulators within Emacs.
       :desc "Vterm popup toggle" "v t" #'+vterm/toggle)
 #+END_SRC
 * JAVA IDE SETTINGS
-** package setup
+** Package setup
 #+begin_src emacs-lisp :tangle yes
 (condition-case nil
     (require 'use-package)
@@ -686,15 +692,11 @@ Settings for the various shells and terminal emulators within Emacs.
         (kbd "C-c p")
       'projectile-command-map))
 #+end_src
-** Java misc and package helpers
-** javadoc help
-* GIT
-#+begin_src emacs-lisp
-(use-package magit)
-#+end_src
+** Javadoc help
 #+begin_src emacs-lisp
 (use-package javadoc-lookup)
 #+end_src
+** Java misc and package helpers
     #+begin_src emacs-lisp :tangle yes
 (use-package mvn) ;; maven helpers
 (use-package maven-test-mode) ;; maven test task helpers)
@@ -705,7 +707,12 @@ Settings for the various shells and terminal emulators within Emacs.
 
 
     #+end_src
-* EGLOT (alt to lsp[Java])
+
+* GIT
+#+begin_src emacs-lisp
+(use-package magit)
+#+end_src
+* EGLOT (alt to lsp[Java,C,C++])
 #+begin_src emacs-lisp :tangle yes
 (use-package eglot)
 
@@ -752,6 +759,18 @@ Settings for the various shells and terminal emulators within Emacs.
 #+begin_src emacs-lisp :tangle yes
 (add-to-list 'company-backends 'company-math-symbols-unicode)
 #+end_src
+** Preview Pane
+#+begin_src emacs-lisp :tangle yes
+(latex-preview-pane-enable)
+#+end_src
+* REST
+** Restclient
+- use rest-client mode, see examples folder for example
+- CTRL c c
+  - to run queries
+#+begin_src emacs-lisp :tangle yes
+(use-package restclient)
+#+end_src
 * MISC PREFERENCES
 I'm not that hardcore, I like my menu bar at the top
 #+begin_src emacs-lisp :tangle yes
@@ -769,13 +788,4 @@ I'm not that hardcore, I like my menu bar at the top
 ** Ace Window
 #+begin_src emacs-lisp :tangle yes
 (global-set-key (kbd "M-o") 'ace-window)
-#+end_src
-
-* REST
-** Restclient
-- use rest-client mode, see examples folder for example
-- CTRL c c
-  - to run queries
-#+begin_src emacs-lisp :tangle yes
-(use-package restclient)
 #+end_src

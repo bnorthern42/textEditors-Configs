@@ -56,8 +56,12 @@
 (package! evil-tex)
 (package! auctex)
 (package! lsp-latex)
+(package! academic-phrases)
+(package! latex-preview-pane)
+(package! pdf-tools)
 ;;org latex
 (package! org-latex-impatient)
+
 ;; useful for when on windows
 (if (eq system-type 'windows-nt )
     (package! powershell)

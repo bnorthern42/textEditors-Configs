@@ -391,9 +391,9 @@ List of keybindings (SPC h b b)")
         (kbd "C-c p")
       'projectile-command-map))
 
-(use-package magit)
-
 (use-package javadoc-lookup)
+
+(use-package magit)
 
 ;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
 ;;(set-frame-parameter (selected-frame) 'alpha <both>)
