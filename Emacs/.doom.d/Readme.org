@@ -730,6 +730,28 @@ Settings for the various shells and terminal emulators within Emacs.
  (set-frame-parameter (selected-frame) 'alpha '(90 . 85))
  (add-to-list 'default-frame-alist '(alpha . (90 . 85)))
 #+end_src
+* LATEX
+** Evil Tex
+#+begin_src emacs-lisp :tangle yes
+(use-package evil-tex)
+(add-hook 'LaTeX-mode-hook #'evil-tex-mode)
+
+#+end_src
+** Tex Mode
+#+begin_src emacs-lisp :tangle yes
+(with-eval-after-load "tex-mode"
+ (add-hook 'tex-mode-hook 'lsp)
+ (add-hook 'latex-mode-hook 'lsp))
+#+end_src
+** Bibtex
+#+begin_src emacs-lisp :tangle yes
+(with-eval-after-load "bibtex"
+ (add-hook 'bibtex-mode-hook 'lsp))
+#+end_src
+** Math Symbols
+#+begin_src emacs-lisp :tangle yes
+(add-to-list 'company-backends 'company-math-symbols-unicode)
+#+end_src
 * MISC PREFERENCES
 I'm not that hardcore, I like my menu bar at the top
 #+begin_src emacs-lisp :tangle yes
@@ -739,8 +761,21 @@ I'm not that hardcore, I like my menu bar at the top
 
 ;;open treemacs on startrup
 (treemacs 1)
+
 #+end_src
 
 #+RESULTS:
 : t
+** Ace Window
+#+begin_src emacs-lisp :tangle yes
+(global-set-key (kbd "M-o") 'ace-window)
+#+end_src
 
+* REST
+** Restclient
+- use rest-client mode, see examples folder for example
+- CTRL c c
+  - to run queries
+#+begin_src emacs-lisp :tangle yes
+(use-package restclient)
+#+end_src

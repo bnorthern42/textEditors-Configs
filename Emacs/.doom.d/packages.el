@@ -52,7 +52,14 @@
 (package! format-sql)
 (package! pg)
 (package! sql-indent)
+;;latex
+(package! evil-tex)
+(package! auctex)
+(package! lsp-latex)
+;;org latex
+(package! org-latex-impatient)
 ;; useful for when on windows
 (if (eq system-type 'windows-nt )
     (package! powershell)
 )
+(package! restclient)
