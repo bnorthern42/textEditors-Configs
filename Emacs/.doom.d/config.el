@@ -141,6 +141,8 @@ List of keybindings (SPC h b b)")
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
              "DONE(d)"           ; Task has been completed
              "CANCELLED(c)" )))) ; Task has been cancelled
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun dt/org-colors-doom-one ()
   "Enable Doom One colors for Org headers."
@@ -370,11 +372,6 @@ List of keybindings (SPC h b b)")
       :desc "Counsel eshell history" "e h" #'counsel-esh-history
       :desc "Vterm popup toggle" "v t" #'+vterm/toggle)
 
-;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
-;;(set-frame-parameter (selected-frame) 'alpha <both>)
-(set-frame-parameter (selected-frame) 'alpha '(90 . 85))
-(add-to-list 'default-frame-alist '(alpha . (90 . 85)))
-
 (use-package flycheck)
 (use-package yasnippet :config (yas-global-mode))
 (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
@@ -399,3 +396,8 @@ List of keybindings (SPC h b b)")
 (use-package magit)
 
 (use-package javadoc-lookup)
+
+;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+;;(set-frame-parameter (selected-frame) 'alpha <both>)
+(set-frame-parameter (selected-frame) 'alpha '(90 . 85))
+(add-to-list 'default-frame-alist '(alpha . (90 . 85)))

@@ -48,7 +48,10 @@
 (package! maven-test-mode)
 (package! java-imports)
 (package! eglot)
-
+;;sql
+(package! format-sql)
+(package! pg)
+(package! sql-indent)
 ;; useful for when on windows
 (if (eq system-type 'windows-nt )
     (package! powershell)
