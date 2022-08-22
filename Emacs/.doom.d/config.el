@@ -141,8 +141,6 @@ List of keybindings (SPC h b b)")
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
              "DONE(d)"           ; Task has been completed
              "CANCELLED(c)" )))) ; Task has been cancelled
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 (defun dt/org-colors-doom-one ()
   "Enable Doom One colors for Org headers."

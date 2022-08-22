@@ -26,6 +26,8 @@ General emacs keybinds:
   - SPC . : open file/project
   - SPC w q : close (pane/window)
   - SPC w s : split window horizontally
+  - SPC p r : Projectile run (enter: mvn spring-boot:run)
+    - Seems odd, but doing this seems faster than hitting play button w/ mouse in IntelliJ
 * PACKAGES INIT
 #+begin_src emacs-lisp :tangle yes
 (condition-case nil
@@ -320,8 +322,6 @@ I wrapped most of this block in (after! org).  Without this, my settings might b
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
              "DONE(d)"           ; Task has been completed
              "CANCELLED(c)" )))) ; Task has been cancelled
-(require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+END_SRC
 
 ** Org fonts
@@ -493,6 +493,14 @@ I have created an interactive function for each color scheme (M-x dt/org-colors-
 
 #+end_src
 
+** Org Bullets
+#+begin_src emacs-lisp :tangle yes
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+#+end_src
+*** Example:
+- See image with M-x org-toggle-inline-images
+[[file:./bullets.png]]
 ** Org-export
 We need ox-man for "Org eXporting" to manpage format and ox-gemini for exporting to gemtext (for the gemini protocol).
 
