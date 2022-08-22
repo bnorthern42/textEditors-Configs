@@ -111,8 +111,9 @@ doctor` to check for any that you may have missed.
 
 # Install
 ``` sh
+#coppy .doom.d/ to home dir then do this:
 git clone --depth 1 https://github.com/doomemacs/doomemacs ~/.emacs.d
-~/.emacs.d/bin/doom install
+~/.emacs.d/bin/doom sync
 ```
 
 Then [read our Getting Started guide][getting-started] to be walked through
