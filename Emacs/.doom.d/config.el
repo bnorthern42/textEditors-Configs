@@ -1,56 +1,3 @@
-#+title: Brad's Doom Emacs Config
-#+AUTHOR: Brad Northern
-#+STARTUP: showeverything
-
-* INFO
-This config file is a mix of what I find on the internet and my own.
-I started using DT's and then I've built from there.
-OG config: https://gitlab.com/dwt1/dotfiles/-/tree/master/.config/doom
-** Gen help
-Theme screenies:
-- https://github.com/doomemacs/themes/tree/screenshots
-Doom emacs quick keybinds
-- https://gist.githubusercontent.com/hjertnes/9e14416e8962ff5f03c6b9871945b165/raw/cad127264693144661f07818ad2e9fda4e0a66db/doom.txt
-General emacs keybinds:
-- https://www.gnu.org/software/emacs/refcards/pdf/refcard.pdf
-
-- What I use a ton (not in any particular order)
-  - SPC w v : split window vertical
-  - SPC h r r : reload doom configs W/O restarts, YAY!!!
-  - SPC o p : open treemacs (file/project preview window thing (on left of screen))
-  - CTRL + ENTER : continue list in ORG mode (like these bullets to make a new one below this)
-  - i : insert mode
-  - :w : write to file
-  - :wq : write and quit a buffer window
-  - ESC exit any mode, hit it a bunch :P
-  - SPC . : open file/project
-  - SPC w q : close (pane/window)
-  - SPC w s : split window horizontally
-* Packages init
-#+begin_src emacs-lisp :tangle yes
-(condition-case nil
-    (require 'use-package)
-  (file-error
-   (require 'package)
-   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-   (package-initialize)
-   (package-refresh-contents)
-   (package-install 'use-package)
-   (setq use-package-always-ensure t)
-   (require 'use-package)))
-(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
-
-#+end_src
-
-* Fonts and Themes
-Doom exposes five (optional) variables for controlling fonts in Doom:
-
-- `doom-font' -- the primary font to use
-- `doom-variable-pitch-font' -- a non-monospace font (where applicable)
-- `doom-big-font' -- used for `doom-big-font-mode'; use this for presentations or streaming.
-- `doom-unicode-font' -- for unicode glyphs
-- `doom-serif-font' -- for the `fixed-pitch-serif' face
-#+begin_src emacs-lisp
 (use-package doom-themes
   :ensure t
   :config
@@ -66,23 +13,10 @@ Doom exposes five (optional) variables for controlling fonts in Doom:
   (doom-themes-org-config))
 
 (setq doom-theme 'doom-peacock)
-#+end_src
 
-* Line Settings
-#+begin_src emacs-lisp
 (setq display-line-numbers-type t)
 (global-set-key "\C-x\ t" 'toggle-truncate-lines)
-#+end_src
 
-* NEOTREE
-Neotree is a file tree viewer.  When you open neotree, it jumps to the current file thanks to neo-smart-open.  The neo-window-fixed-size setting makes the neotree width be adjustable.  Doom Emacs had no keybindings set for neotree.  Since Doom Emacs uses 'SPC t' for 'toggle' keybindings, I used 'SPC t n' for toggle-neotree.
-
-| COMMAND        | DESCRIPTION               | KEYBINDING |
-|----------------+---------------------------+------------|
-| neotree-toggle | /Toggle neotree/            | SPC t n    |
-| neotree- dir   | /Open directory in neotree/ | SPC d n    |
-
-#+BEGIN_SRC emacs-lisp
 (after! neotree
   (setq neo-smart-open t
         neo-window-fixed-size nil))
@@ -91,48 +25,17 @@ Neotree is a file tree viewer.  When you open neotree, it jumps to the current f
 (map! :leader
       :desc "Toggle neotree file viewer" "t n" #'neotree-toggle
       :desc "Open directory in neotree" "d n" #'neotree-dir)
-#+END_SRC
 
-* General User
-#+begin_src emacs-lisp
 (setq user-full-name "Brad Northern"
       user-mail-address "bradn4@gmail.com")
-#+end_src
-* BEACON
-Never lose your cursor.  When you scroll, your cursor will shine!  This is a global minor-mode. Turn it on everywhere with:
 
-#+begin_src emacs-lisp
 (beacon-mode 1)
-#+end_src
-* BOOKMARKS AND BUFFERS
-Doom Emacs uses 'SPC b' for keybindings related to bookmarks and buffers.
 
-** Bookmarks
-Bookmarks are somewhat like registers in that they record positions you can jump to.  Unlike registers, they have long names, and they persist automatically from one Emacs session to the next. The prototypical use of bookmarks is to record where you were reading in various files.
-
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       (:prefix ("b". "buffer")
        :desc "List bookmarks" "L" #'list-bookmarks
        :desc "Save current bookmarks to bookmark file" "w" #'bookmark-save))
-#+END_SRC
 
-** Buffers
-Regarding /buffers/, the text you are editing in Emacs resides in an object called a /buffer/. Each time you visit a file, a buffer is used to hold the file’s text. Each time you invoke Dired, a buffer is used to hold the directory listing.  /Ibuffer/ is a program that lists all of your Emacs /buffers/, allowing you to navigate between them and filter them.
-
-| COMMAND         | DESCRIPTION          | KEYBINDING |
-|-----------------+----------------------+------------|
-| ibuffer         | Launch ibuffer       | SPC b i    |
-| kill-buffer     | Kill current buffer  | SPC b k    |
-| next-buffer     | Goto next buffer     | SPC b n    |
-| previous-buffer | Goto previous buffer | SPC b p    |
-| save-buffer     | Save current buffer  | SPC b s    |
-
-* DASHBOARD
-Emacs Dashboard is an extensible startup screen showing you recent files, bookmarks, agenda items and an Emacs banner.
-
-** Configuring Dashboard
-#+begin_src emacs-lisp
 (use-package dashboard
   :init      ;; tweak dashboard config before loading it
   (setq dashboard-set-heading-icons t)
@@ -156,67 +59,9 @@ List of keybindings (SPC h b b)")
   (dashboard-setup-startup-hook)
   (dashboard-modify-heading-icons '((recents . "file-text")
                                     (bookmarks . "book"))))
-#+end_src
 
-** Dashboard in Emacsclient
-This setting ensures that emacsclient always opens on *dashboard* rather than *scratch*.
-#+begin_src emacs-lisp
 (setq doom-fallback-buffer-name "*dashboard*")
-#+end_src
 
-
-
-
-
-* DIRED
-Dired is the file manager within Emacs.  Below, I setup keybindings for image previews (peep-dired).  Doom Emacs does not use 'SPC d' for any of its keybindings, so I've chosen the format of 'SPC d' plus 'key'.
-
-** Keybindings To Open Dired
-
-| COMMAND    | DESCRIPTION                        | KEYBINDING |
-|------------+------------------------------------+------------|
-| dired      | /Open dired file manager/            | SPC d d    |
-| dired-jump | /Jump to current directory in dired/ | SPC d j    |
-
-** Keybindings Within Dired
-*** Basic dired commands
-
-| COMMAND                 | DESCRIPTION                                 | KEYBINDING |
-|-------------------------+---------------------------------------------+------------|
-| dired-view-file         | /View file in dired/                          | SPC d v    |
-| dired-up-directory      | /Go up in directory tree/                     | h          |
-| dired-find-file         | /Go down in directory tree (or open if file)/ | l          |
-| dired-next-line         | Move down to next line                      | j          |
-| dired-previous-line     | Move up to previous line                    | k          |
-| dired-mark              | Mark file at point                          | m          |
-| dired-unmark            | Unmark file at point                        | u          |
-| dired-do-copy           | Copy current file or marked files           | C          |
-| dired-do-rename         | Rename current file or marked files         | R          |
-| dired-hide-details      | Toggle detailed listings on/off             | (          |
-| dired-git-info-mode     | Toggle git information on/off               | )          |
-| dired-create-directory  | Create new empty directory                  | +          |
-| dired-diff              | Compare file at point with another          | =          |
-| dired-subtree-toggle    | Toggle viewing subtree at point             | TAB        |
-
-*** Dired commands using regex
-
-| COMMAND                 | DESCRIPTION                | KEYBINDING |
-|-------------------------+----------------------------+------------|
-| dired-mark-files-regexp | Mark files using regex     | % m        |
-| dired-do-copy-regexp    | Copy files using regex     | % C        |
-| dired-do-rename-regexp  | Rename files using regex   | % R        |
-| dired-mark-files-regexp | Mark all files using regex | * %        |
-
-*** File permissions and ownership
-
-| COMMAND         | DESCRIPTION                      | KEYBINDING |
-|-----------------+----------------------------------+------------|
-| dired-do-chgrp  | Change the group of marked files | g G        |
-| dired-do-chmod  | Change the mode of marked files  | M          |
-| dired-do-chown  | Change the owner of marked files | O          |
-| dired-do-rename | Rename file or all marked files  | R          |
-
-#+begin_src emacs-lisp
 (map! :leader
       (:prefix ("d" . "dired")
        :desc "Open dired" "d" #'dired
@@ -257,36 +102,15 @@ Dired is the file manager within Emacs.  Below, I setup keybindings for image pr
                               ("png" . "sxiv")
                               ("mkv" . "mpv")
                               ("mp4" . "mpv")))
-#+end_src
 
-** Keybindings Within Dired With Peep-Dired-Mode Enabled
-If peep-dired is enabled, you will get image previews as you go up/down with 'j' and 'k'
-
-| COMMAND              | DESCRIPTION                              | KEYBINDING |
-|----------------------+------------------------------------------+------------|
-| peep-dired           | /Toggle previews within dired/             | SPC d p    |
-| peep-dired-next-file | /Move to next file in peep-dired-mode/     | j          |
-| peep-dired-prev-file | /Move to previous file in peep-dired-mode/ | k          |
-
-#+BEGIN_SRC emacs-lisp
 (evil-define-key 'normal peep-dired-mode-map
   (kbd "j") 'peep-dired-next-file
   (kbd "k") 'peep-dired-prev-file)
 (add-hook 'peep-dired-hook 'evil-normalize-keymaps)
-#+END_SRC
 
-** Making deleted files go to trash can
-#+begin_src emacs-lisp
 (setq delete-by-moving-to-trash t
       trash-directory "~/.local/share/Trash/files/")
-#+end_src
 
-* ORG MODE
-I wrapped most of this block in (after! org).  Without this, my settings might be evaluated too early, which will result in my settings being overwritten by Doom's defaults.  I have also enabled org-journal, org-superstar and org-roam by adding (+journal +pretty +roam2) to the org section of my Doom Emacs init.el.
-
-=NOTE:= I have the location of my Org directory and Roam directory in $HOME/nc/ which is a Nextcloud folder that allows me to instantly sync all of my Org work between my home computer and my office computer.
-
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       :desc "Org babel tangle" "m B" #'org-babel-tangle)
 (after! org
@@ -317,11 +141,6 @@ I wrapped most of this block in (after! org).  Without this, my settings might b
              "|"                 ; The pipe necessary to separate "active" states and "inactive" states
              "DONE(d)"           ; Task has been completed
              "CANCELLED(c)" )))) ; Task has been cancelled
-#+END_SRC
-
-** Org fonts
-I have created an interactive function for each color scheme (M-x dt/org-colors-*).  These functions will set appropriate colors and font attributes for org-level fonts and the org-table font.
-#+begin_src emacs-lisp
 
 (defun dt/org-colors-doom-one ()
   "Enable Doom One colors for Org headers."
@@ -486,66 +305,26 @@ I have created an interactive function for each color scheme (M-x dt/org-colors-
 ;; Load our desired dt/org-colors-* theme on startup
 (dt/org-colors-doom-one)
 
-#+end_src
-
-** Org-export
-We need ox-man for "Org eXporting" to manpage format and ox-gemini for exporting to gemtext (for the gemini protocol).
-
-=NOTE=: I also enable ox-publish for converting an Org site into an HTML site, but that is done in init.el (org +publish).
-
-#+BEGIN_SRC emacs-lisp
 (use-package ox-man)
 (use-package ox-gemini)
-#+END_SRC
 
-** Org-journal
-#+begin_src emacs-lisp
 (setq org-journal-dir "~/nc/Org/journal/"
       org-journal-date-prefix "* "
       org-journal-time-prefix "** "
       org-journal-date-format "%B %d, %Y (%A) "
       org-journal-file-format "%Y-%m-%d.org")
-#+end_src
 
-** Org-publish
-#+begin_src emacs-lisp
 (setq org-publish-use-timestamps-flag nil)
 (setq org-export-with-broken-links t)
-#+end_src
 
-** Org-auto-tangle
-=org-auto-tangle= allows you to add the option =#+auto_tangle: t= in your Org file so that it automatically tangles when you save the document.
-
-#+begin_src emacs-lisp
 (use-package! org-auto-tangle
   :defer t
   :hook (org-mode . org-auto-tangle-mode)
   :config
   (setq org-auto-tangle-default t))
 
-#+end_src
-
-* PASSWORD STORE
-Uses the standard Unix password store "pass".
-
-#+begin_src emacs-lisp
 (use-package! password-store)
-#+end_src
 
-* PERSPECTIVE
-Perspective provides multiple named workspaces (or "perspectives") in Emacs, similar to having multiple desktops in window managers like Awesome and XMonad.  Each perspective has its own buffer list and its own window layout, making it easy to work on many separate projects without getting lost in all the buffers.  Switching to a perspective activates its window configuration, and when in a perspective, only its buffers are available (by default).  Doom Emacs uses 'SPC some_key' for binding some of the perspective commands, so I used this binging format for the perspective bindings that I created..
-
-| COMMAND                    | DESCRIPTION                         | KEYBINDING |
-|----------------------------+-------------------------------------+------------|
-| persp-switch               | Switch to perspective NAME          | SPC DEL    |
-| persp-switch-to-buffer     | Switch to buffer in perspective     | SPC ,      |
-| persp-next                 | Switch to next perspective          | SPC ]      |
-| persp-prev                 | Switch to previous perspective      | SPC [      |
-| persp-add-buffer           | Add a buffer to current perspective | SPC +      |
-| persp-remove-by-name       | Remove perspective by name          | SPC -      |
-| +workspace/switch-to-{0-9} | Switch to workspace /n/               | SPC 0-9    |
-
-#+begin_src emacs-lisp
 (map! :leader
       :desc "Switch to perspective NAME" "DEL" #'persp-switch
       :desc "Switch to buffer in perspective" "," #'persp-switch-to-buffer
@@ -553,38 +332,14 @@ Perspective provides multiple named workspaces (or "perspectives") in Emacs, sim
       :desc "Switch to previous perspective" "[" #'persp-prev
       :desc "Add a buffer current perspective" "+" #'persp-add-buffer
       :desc "Remove perspective by name" "-" #'persp-remove-by-name)
-#+end_src
 
-* RAINBOW MODE
-Rainbox mode displays the actual color for any hex value color.  It's such a nice feature that I wanted it turned on all the time, regardless of what mode I am in.  The following creates a global minor mode for rainbow-mode and enables it (exception: org-agenda-mode since rainbow-mode destroys all highlighting in org-agenda).
-
-#+begin_src emacs-lisp
 (define-globalized-minor-mode global-rainbow-mode rainbow-mode
   (lambda ()
     (when (not (memq major-mode
                 (list 'org-agenda-mode)))
      (rainbow-mode 1))))
 (global-rainbow-mode 1 )
-#+end_src
 
-* REGISTERS
-Emacs registers are compartments where you can save text, rectangles and positions for later use. Once you save text or a rectangle in a register, you can copy it into the buffer once or many times; once you save a position in a register, you can jump back to that position once or many times.  The default GNU Emacs keybindings for these commands (with the exception of counsel-register) involves 'C-x r' followed by one or more other keys.  I wanted to make this a little more user friendly, and since I am using Doom Emacs, I choose to replace the 'C-x r' part of the key chords with 'SPC r'.
-
-| COMMAND                          | DESCRIPTION                      | KEYBINDING |
-|----------------------------------+----------------------------------+------------|
-| copy-to-register                 | /Copy to register/                 | SPC r c    |
-| frameset-to-register             | /Frameset to register/             | SPC r f    |
-| insert-register                  | /Insert contents of register/      | SPC r i    |
-| jump-to-register                 | /Jump to register/                 | SPC r j    |
-| list-registers                   | /List registers/                   | SPC r l    |
-| number-to-register               | /Number to register/               | SPC r n    |
-| counsel-register                 | /Interactively choose a register/  | SPC r r    |
-| view-register                    | /View a register/                  | SPC r v    |
-| window-configuration-to-register | /Window configuration to register/ | SPC r w    |
-| increment-register               | /Increment register/               | SPC r +    |
-| point-to-register                | /Point to register/                | SPC r SPC  |
-
-#+BEGIN_SRC emacs-lisp
 (map! :leader
       (:prefix ("r" . "registers")
        :desc "Copy to register" "c" #'copy-to-register
@@ -598,14 +353,7 @@ Emacs registers are compartments where you can save text, rectangles and positio
        :desc "Window configuration to register" "w" #'window-configuration-to-register
        :desc "Increment register" "+" #'increment-register
        :desc "Point to register" "SPC" #'point-to-register))
-#+END_SRC
 
-* SHELLS
-Settings for the various shells and terminal emulators within Emacs.
-+ 'shell-file-name' -- sets the shell to be used in M-x shell, M-x term, M-x ansi-term and M-x vterm.
-+ 'eshell-aliases-file' -- sets an aliases file for the eshell.
-
-#+BEGIN_SRC emacs-lisp
 (setq shell-file-name "/bin/zsh"
       vterm-max-scrollback 5000)
 (setq eshell-rc-script "~/.config/doom/eshell/profile"
@@ -621,42 +369,12 @@ Settings for the various shells and terminal emulators within Emacs.
       :desc "Eshell popup toggle" "e t" #'+eshell/toggle
       :desc "Counsel eshell history" "e h" #'counsel-esh-history
       :desc "Vterm popup toggle" "v t" #'+vterm/toggle)
-#+END_SRC
-* Transparency
-#+begin_src emacs-lisp
- ;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
- ;;(set-frame-parameter (selected-frame) 'alpha <both>)
- (set-frame-parameter (selected-frame) 'alpha '(90 . 85))
- (add-to-list 'default-frame-alist '(alpha . (90 . 85)))
-#+end_src
-* Java IDE Settings
-** package setup
-#+begin_src emacs-lisp :tangle yes
-(condition-case nil
-    (require 'use-package)
-  (file-error
-   (require 'package)
-   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-   (package-initialize)
-   (package-refresh-contents)
-   (package-install 'use-package)
-   (setq use-package-always-ensure t)
-   (require 'use-package)))
-(add-to-list 'package-archives '("gnu"   . "https://elpa.gnu.org/packages/"))
-#+end_src
-** Package configs
-- For lsp-java setup
-  - Download language server here:
-    - https://projects.eclipse.org/projects/eclipse.jdt.ls/downloads
-    - I use milestone, use whatever you want
-    - unzip this where ever you store langauge stuff
-  - Do 'M-x' customize-groups : lsp-java
-    - find 'Lsp Java Server Install Dir'
-    - on left side hit enter on triangle it brings down dropdown
-    - insert location of the content of the files that you unzip/untar'd
-    - (mine) ~/.emacs.d/.local/etc/lsp/eclipse.jdt.ls/
 
-#+begin_src emacs-lisp
+;;(set-frame-parameter (selected-frame) 'alpha '(<active> . <inactive>))
+;;(set-frame-parameter (selected-frame) 'alpha <both>)
+(set-frame-parameter (selected-frame) 'alpha '(90 . 85))
+(add-to-list 'default-frame-alist '(alpha . (90 . 85)))
+
 (use-package flycheck)
 (use-package yasnippet :config (yas-global-mode))
 (use-package lsp-mode :hook ((lsp-mode . lsp-enable-which-key-integration))
@@ -668,9 +386,7 @@ Settings for the various shells and terminal emulators within Emacs.
 (use-package helm
   :config (helm-mode))
 (use-package lsp-treemacs)
-#+end_src
-** Project Navigation
-#+begin_src emacs-lisp
+
 (use-package projectile
     :ensure t
     :init (projectile-mode +1)
@@ -679,55 +395,7 @@ Settings for the various shells and terminal emulators within Emacs.
         projectile-mode-map
         (kbd "C-c p")
       'projectile-command-map))
-#+end_src
-** Git
-#+begin_src emacs-lisp
+
 (use-package magit)
-#+end_src
-** javadoc help
-#+begin_src emacs-lisp
+
 (use-package javadoc-lookup)
-#+end_src
-** Java misc and package helpers
-    #+begin_src emacs-lisp :tangle yes
-(use-package mvn) ;; maven helpers
-(use-package maven-test-mode) ;; maven test task helpers)
-(use-package java-imports)
-        (define-key java-mode-map (kbd "M-I") 'java-imports-add-import-dwim)
-        (setq java-imports-find-block-function 'java-imports-find-place-sorted-block)
-        (add-hook 'java-mode-hook 'java-imports-scan-file)
-
-
-    #+end_src
-* Personal Preference things
-I'm not that hardcore, I like my menu bar at the top
-#+begin_src emacs-lisp :tangle yes
-(menu-bar-mode 1)
-;; watch for file changes outside emacs
-(global-auto-revert-mode 1)
-
-;;open treemacs on startrup
-(neotree-toggle)
-#+end_src
-
-#+RESULTS:
-: t
-
-* Eglot (alt to lsp)
-#+begin_src emacs-lisp :tangle yes
-(use-package eglot)
-
-
-    (defconst my-eclipse-jdt-home "/home/bradn4/.emacs.d/.local/etc/lsp/eclipse.jdt.ls/plugins/org.eclipse.equinox.launcher_1.6.400.v20210924-0641.jar")
-      (defun my-eglot-eclipse-jdt-contact (interactive)
-        "Contact with the jdt server input INTERACTIVE."
-        (let ((cp (getenv "CLASSPATH")))
-          (setenv "CLASSPATH" (concat cp ":" my-eclipse-jdt-home))
-          (unwind-protect (eglot--eclipse-jdt-contact nil)
-            (setenv "CLASSPATH" cp))))
-      (setcdr (assq 'java-mode eglot-server-programs) #'my-eglot-eclipse-jdt-contact)
-(add-hook 'java-mode-hook 'eglot-ensure)
-(add-hook 'c-mode-hook 'eglot-ensure)
-(add-hook 'c++-mode-hook 'eglot-ensure)
-
-#+end_src
